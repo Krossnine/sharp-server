@@ -1,5 +1,5 @@
 {
-  "name": "@sharp-server/api-client",
+  "name": "@sharp-server/image-api-client",
   "version": "0.1.0",
   "author": "Jeremy Wallez <jeremy.wallez@gmail.com>",
   "private": true,

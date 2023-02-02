@@ -1,5 +1,5 @@
 {
-  "name": "@sharp-server/api",
+  "name": "@sharp-server/image-api",
   "version": "0.1.0",
   "author": "Jeremy Wallez <jeremy.wallez@gmail.com>",
   "main": "index.js",

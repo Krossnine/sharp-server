@@ -1,5 +1,5 @@
 import React, {useEffect, useState } from 'react';
-import { Alert } from 'react-bootstrap';
+import { Alert, Image as BootstrapImage } from 'react-bootstrap';
 
 type ImageProps = {
     url: string
@@ -20,7 +20,13 @@ export default function Image(imageProps: ImageProps) {
         <>
             {imageProps.url && imageProps.url.length > 0 && !imageError &&
                 <a target="_blank" rel="noreferrer" href={imageProps.url}>
-                    <img alt="" src={imageProps.url} onError={onImageError} />
+                    <BootstrapImage
+                        alt=""
+                        src={imageProps.url}
+                        onError={onImageError}
+                        fluid={true}
+                        thumbnail={true}
+                    />
                 </a>
             }
             {imageError &&

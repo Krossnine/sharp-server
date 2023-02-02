@@ -1,7 +1,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/node,intellij+all,visualstudiocode,windows,macos,linux
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,intellij+all,visualstudiocode,windows,macos,linux
 
-packages/api-doc/public/__ENV.js
+packages/image-api-doc/public/__ENV.js
 
 ### Intellij+all ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
