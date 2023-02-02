@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-ARG WORKSPACE=@sharp-server/api-doc
+ARG WORKSPACE=@sharp-server/image-api
 
 RUN npm install --workspace=$WORKSPACE
 RUN npm run build --workspace=$WORKSPACE
@@ -13,10 +13,9 @@ RUN npm install  --workspace=$WORKSPACE --omit=dev
 FROM node:18.12.1-slim AS runner
 
 WORKDIR /app
-
 COPY --from=builder /app /app
 
-EXPOSE 3001
-ENV PORT 3001
+ENV PORT 3000
+EXPOSE 3000
 
-CMD ["npm", "start", "-w" , "@sharp-server/api-doc"]
+CMD ["npm", "start", "-w" , "@sharp-server/api"]

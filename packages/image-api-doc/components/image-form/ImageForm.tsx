@@ -1,18 +1,20 @@
 import React, {useState} from 'react';
 import {useForm} from 'react-hook-form';
-import {Col, Row, Form} from 'react-bootstrap';
-import {ImageClient, ImageTransformOptions} from '@sharp-server/api-client';
+import {Col, Row, Form, ListGroup} from 'react-bootstrap';
+import {ImageClient, ImageTransformOptions} from '@sharp-server/image-api-client';
 import Image from "../image/Image";
 import styles from "./ImageForm.module.css"
 import {getAppConfig} from "../../config/config";
 
 const defaultValues = {
-    url: "https://www.usinenouvelle.com/mediatheque/7/7/6/000485677_896x598_c.png",
+    url: "https://images.pexels.com/photos/462162/pexels-photo-462162.jpeg",
     flip: false,
     flop: false,
     format: 'avif',
     rotate: 0,
-}
+    width: "400",
+    height: "400",
+};
 
 export default function ImageForm() {
     const [compressedUrl, setCompressedUrl] = useState('');
@@ -83,14 +85,20 @@ export default function ImageForm() {
                 <hr/>
                 <Row className="mb-3">
                     <Col className={styles.imageLabel}>
-                        <p>Original Image</p>
-                        <Image {...{url: originalUrl}} />
-                    </Col>
-                    <Col className={styles.imageLabel}>
-                        <p>Optimized Image</p>
+                        <div style={{ paddingBottom: "1rem" }} className="d-flex align-items-center justify-content-center">
+                            <ListGroup horizontal>
+                                <ListGroup.Item>
+                                    <a target="_blank" rel="noreferrer" href={originalUrl}>Open original image</a>
+                                </ListGroup.Item>
+                                <ListGroup.Item>
+                                    <a target="_blank" rel="noreferrer" href={url}>Open resized url</a>
+                                </ListGroup.Item>
+                                <ListGroup.Item>
+                                    <a target="_blank" rel="noreferrer" href={compressedUrl}>Open compressed Resized url</a>
+                                </ListGroup.Item>
+                            </ListGroup>
+                        </div>
                         <Image {...{url:compressedUrl}} />
-                        <p><a target="_blank" rel="noreferrer" href={url}>Open resized url</a></p>
-                        <p><a target="_blank" rel="noreferrer" href={compressedUrl}>Open compressed Resized url</a></p>
                     </Col>
                 </Row>
             </div>

@@ -26,7 +26,7 @@ jobs:
         uses: codecov/codecov-action@v3
         if: matrix.node-version == '18.x'
         with:
-          files: ./packages/api/coverage/cobertura-coverage.xml
+          files: ./packages/image-api/coverage/cobertura-coverage.xml
           flags: unittests
           fail_ci_if_error: true
           verbose: true

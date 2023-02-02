@@ -3,7 +3,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: packages/api/Dockerfile
+      dockerfile: packages/image-api/Dockerfile
       network: host
     image: "krossnine/sharp-server:${VERSION:-latest}"
     container_name: sharp-server-api
@@ -17,7 +17,7 @@ services:
   api-doc:
     build:
       context: .
-      dockerfile: packages/api-doc/Dockerfile
+      dockerfile: packages/image-api-doc/Dockerfile
       network: host
     image: ${SHARP_SERVER_API_DOC_DOCKER_IMAGE_NAME:-sharp_server_api_doc}:${VERSION:-latest}
     container_name: sharp-server-api-doc
