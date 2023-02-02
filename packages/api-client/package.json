@@ -1,0 +1,20 @@
+{
+  "name": "@sharp-server/api-client",
+  "version": "0.1.0",
+  "author": "Jeremy Wallez <jeremy.wallez@gmail.com>",
+  "private": true,
+  "main": "./dist/cjs/ImageClient.js",
+  "module": "./dist/esm/ImageClient.js",
+  "types": "./dist/esm/ImageClient.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "prepare": "npm run build",
+    "clean": "rm -rf node_modules dist",
+    "build:esm": "tsc",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs",
+    "build": "npm run build:esm && npm run build:cjs",
+    "watch": "tsc --watch --preserveWatchOutput"
+  }
+}

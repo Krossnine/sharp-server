@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "target": "es2017",
+    "lib": ["es6"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "baseUrl": "./src",
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "noImplicitAny": true,
+    "skipLibCheck": true,
+    "types": [
+      "reflect-metadata",
+      "jest",
+      "node"
+    ],
+    "typeRoots": [
+      "./global.d.ts",
+      "../../node_modules/@types"
+    ],
+    "paths": {
+      "@/authorization/*": ["authorization/*"],
+      "@/cache/*": ["cache/*"],
+      "@/config": ["config/config.ts"],
+      "@/error/*": ["error/*"],
+      "@/health/*": ["health/*"],
+      "@/image/*": ["image/*"],
+      "@/logger/*": ["logger/*"],
+      "@/logger": ["logger/logger.ts"]
+    },
+    "plugins": [
+      { "transform": "typescript-transform-paths", "useRootDirs": true },
+      { "transform": "typescript-transform-paths", "useRootDirs": true, "afterDeclarations": true }
+    ]
+  },
+  "include": ["**/*.ts"]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "sharp-server",
+  "description": "High performance Node.js REST API for image processing",
+  "author": "Jeremy Wallez <jeremy.wallez@gmail.com>",
+  "engines": {
+    "node": ">=16",
+    "npm": ">=8"
+  },
+  "scripts": {
+    "clean": "npx lerna run clean --parallel --stream",
+    "start": "npx lerna run start --parallel --stream",
+    "lint": "npx lerna run lint --parallel --stream",
+    "test": "npx lerna run test --parallel --stream",
+    "build": "npx lerna run build --parallel --stream",
+    "watch": "npx lerna run watch --parallel --stream"
+  },
+  "keywords": [],
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "lerna": "^6.1.0"
+  }
+}

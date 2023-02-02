@@ -1,0 +1,28 @@
+version: '3.7'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: packages/api/Dockerfile
+      network: host
+    image: "krossnine/sharp-server:${VERSION:-latest}"
+    container_name: sharp-server-api
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - LOG_NAME=sharp-server
+      - LOG_LEVEL=debug
+    ports:
+      - "3000:3000"
+  api-doc:
+    build:
+      context: .
+      dockerfile: packages/api-doc/Dockerfile
+      network: host
+    image: ${SHARP_SERVER_API_DOC_DOCKER_IMAGE_NAME:-sharp_server_api_doc}:${VERSION:-latest}
+    container_name: sharp-server-api-doc
+    restart: unless-stopped
+    environment:
+      - REACT_APP_API_BASE_URL=http://localhost:3000
+    ports:
+      - "3001:3001"

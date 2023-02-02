@@ -1,0 +1,40 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: sharp-server
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+      - name: Publish code coverage
+        uses: codecov/codecov-action@v3
+        if: matrix.node-version == '18.x'
+        with:
+          files: ./packages/api/coverage/cobertura-coverage.xml
+          flags: unittests
+          fail_ci_if_error: true
+          verbose: true
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        if: matrix.node-version == '18.x'
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --all-projects --sarif-file-output=snyk.sarif

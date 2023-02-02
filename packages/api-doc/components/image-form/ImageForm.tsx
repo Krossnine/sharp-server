@@ -1,0 +1,99 @@
+import React, {useState} from 'react';
+import {useForm} from 'react-hook-form';
+import {Col, Row, Form} from 'react-bootstrap';
+import {ImageClient, ImageTransformOptions} from '@sharp-server/api-client';
+import Image from "../image/Image";
+import styles from "./ImageForm.module.css"
+import {getAppConfig} from "../../config/config";
+
+const defaultValues = {
+    url: "https://www.usinenouvelle.com/mediatheque/7/7/6/000485677_896x598_c.png",
+    flip: false,
+    flop: false,
+    format: 'avif',
+    rotate: 0,
+}
+
+export default function ImageForm() {
+    const [compressedUrl, setCompressedUrl] = useState('');
+    const [url, setUrl] = useState('');
+    const [originalUrl, setOriginalUrl] = useState('');
+    const {register, watch, getValues} = useForm<ImageTransformOptions>({defaultValues});
+
+    const imageClient = new ImageClient(getAppConfig().apiBaseUrl);
+
+    function refreshImage(): void {
+        setUrl('');
+        setOriginalUrl('');
+        setOriginalUrl(getValues().url);
+        setCompressedUrl(imageClient.getCompressedImageUrl(getValues()));
+        setUrl(imageClient.getImageUrl(getValues()));
+    }
+
+    React.useEffect(() => {
+        refreshImage();
+        const subscription = watch(refreshImage);
+        return () => subscription.unsubscribe();
+    }, [watch]);
+
+    return (
+        <>
+            <div id={styles.imageFormContainer}>
+                <Form onSubmit={refreshImage}>
+                    <Row className="mb-3">
+                        <Form.Group>
+                            <Form.Label>Image url</Form.Label>
+                            <Form.Control {...register("url")}/>
+                        </Form.Group>
+                    </Row>
+                    <Row className="mb-3">
+                        <Form.Group as={Col}>
+                            <Form.Label>Width</Form.Label>
+                            <Form.Control {...register("width")} />
+                        </Form.Group>
+                        <Form.Group as={Col}>
+                            <Form.Label>Height</Form.Label>
+                            <Form.Control {...register("height")} />
+                        </Form.Group>
+                        <Form.Group as={Col}>
+                            <Form.Label>Quality</Form.Label>
+                            <Form.Control {...register("quality")} />
+                        </Form.Group>
+                        <Form.Group as={Col}>
+                            <Form.Label>Format</Form.Label>
+                            <Form.Select aria-label="Image format" {...register("format")}>
+                                <option value="avif">Avif</option>
+                                <option value="webp">Webp</option>
+                                <option value="jpeg">Jpeg</option>
+                                <option value="png">Png</option>
+                            </Form.Select>
+                        </Form.Group>
+                        <Form.Group as={Col}>
+                            <Form.Label>Rotate</Form.Label>
+                            <Form.Control {...register("rotate")} />
+                        </Form.Group>
+                    </Row>
+                    <Row className="mb-3">
+                        <Form.Group as={Col}>
+                            <Form.Check inline type="checkbox" label="Flip" {...register("flip")} />
+                            <Form.Check inline type="checkbox" label="Flop" {...register("flop")} />
+                        </Form.Group>
+                    </Row>
+                </Form>
+                <hr/>
+                <Row className="mb-3">
+                    <Col className={styles.imageLabel}>
+                        <p>Original Image</p>
+                        <Image {...{url: originalUrl}} />
+                    </Col>
+                    <Col className={styles.imageLabel}>
+                        <p>Optimized Image</p>
+                        <Image {...{url:compressedUrl}} />
+                        <p><a target="_blank" rel="noreferrer" href={url}>Open resized url</a></p>
+                        <p><a target="_blank" rel="noreferrer" href={compressedUrl}>Open compressed Resized url</a></p>
+                    </Col>
+                </Row>
+            </div>
+        </>
+    );
+}
