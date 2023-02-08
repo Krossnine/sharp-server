@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import type {Express} from 'express';
 import express from 'express';
+import path from 'path';
 import accessLogs from "@/logger/accessLogs";
 import {errorMiddleware} from "@/error/errorMiddleware";
 import {healthCheck} from "@/health/healthCheck";
@@ -28,15 +29,13 @@ export function getImageAuthorization(config: IConfig): ImageAuthorization {
 }
 
 export function createApp(config: IConfig): Express {
-    const imageAuthorization = getImageAuthorization(config);
-    const streamCache = getStreamCache(config);
     const app: Express = express();
-    app.use(express.static('public'));
+    app.use(express.static(path.resolve(__dirname, 'public')));
     app.use(accessLogs);
     app.get('/health', healthCheck);
-    app.get('/*', authorizeImageEdits(imageAuthorization));
+    app.get('/*', authorizeImageEdits(getImageAuthorization(config)));
     app.get('/*', parseImageEdits);
-    app.get('/*', downloadImage(streamCache));
+    app.get('/*', downloadImage(getStreamCache(config)));
     app.get('/*', setImageContentType);
     app.get('/*', editImage);
     app.use(errorMiddleware);

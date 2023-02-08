@@ -11,7 +11,7 @@
     "start": "npx lerna run start --parallel --stream",
     "lint": "npx lerna run lint --parallel --stream",
     "test": "npx lerna run test --parallel --stream",
-    "build": "npx lerna run build --parallel --stream",
+    "build": "npx lerna run build --stream",
     "watch": "npx lerna run watch --parallel --stream"
   },
   "keywords": [],

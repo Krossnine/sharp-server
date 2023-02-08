@@ -12,7 +12,7 @@ export type ImageTransformOptions = {
 export class ImageClient {
   private readonly sharpImageServer: string;
 
-  constructor(sharpImageServer = 'http://localhost:3000') {
+  constructor(sharpImageServer: string) {
     this.sharpImageServer = sharpImageServer;
   }
 
@@ -36,6 +36,7 @@ export class ImageClient {
     return `${this.sharpImageServer}?${qp.toString()}`;
   }
 
+  // TODO : check if duplicate trailing slash
   public getCompressedImageUrl(imageTransformOptions: ImageTransformOptions) {
     return `${this.sharpImageServer}/${btoa(JSON.stringify(this.filter(imageTransformOptions)))}`;
   }

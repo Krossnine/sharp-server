@@ -4,7 +4,6 @@ import {Col, Row, Form, ListGroup} from 'react-bootstrap';
 import {ImageClient, ImageTransformOptions} from '@sharp-server/image-api-client';
 import Image from "../image/Image";
 import styles from "./ImageForm.module.css"
-import {getAppConfig} from "../../config/config";
 
 const defaultValues = {
     url: "https://images.pexels.com/photos/462162/pexels-photo-462162.jpeg",
@@ -22,7 +21,9 @@ export default function ImageForm() {
     const [originalUrl, setOriginalUrl] = useState('');
     const {register, watch, getValues} = useForm<ImageTransformOptions>({defaultValues});
 
-    const imageClient = new ImageClient(getAppConfig().apiBaseUrl);
+    const isDev = (!process.env.NODE_ENV || process.env.NODE_ENV === 'development');
+    const apiUrl = isDev ? 'http://localhost:3000' : window.location.origin ;
+    const imageClient = new ImageClient(apiUrl);
 
     function refreshImage(): void {
         setUrl('');
@@ -32,11 +33,13 @@ export default function ImageForm() {
         setUrl(imageClient.getImageUrl(getValues()));
     }
 
+    /* eslint-disable */
     React.useEffect(() => {
         refreshImage();
         const subscription = watch(refreshImage);
         return () => subscription.unsubscribe();
     }, [watch]);
+    /* eslint-enable */
 
     return (
         <>
