@@ -1,15 +1,23 @@
 import {
-    IsInt, IsPositive, IsOptional, IsBoolean, IsUrl, validate, IsEnum
+    IsInt, IsPositive, IsOptional, IsBoolean, IsUrl, validate, IsEnum, IsString, IsHexColor, IsHSL
 } from 'class-validator';
 
 import {Type, plainToClass} from "class-transformer"
 
 export enum ImageFormat {
-    AVIF="avif",
-    WEBP="webp",
-    JPEG="jpeg",
-    JPG="jpg",
-    PNG="png",
+    AVIF='avif',
+    WEBP='webp',
+    JPEG='jpeg',
+    JPG='jpg',
+    PNG='png',
+}
+
+export enum ResizeFit {
+    COVER="cover",
+    CONTAIN='contain',
+    FILL='fill',
+    INSIDE='inside',
+    OUTSIDE='outside',
 }
 
 export class ImageEdits {
@@ -38,6 +46,14 @@ export class ImageEdits {
     @IsOptional()
     format?: string;
 
+    @IsEnum(ResizeFit, {message: () => `Allowed resize fits should be ${Object.values(ResizeFit).join(',')}`})
+    @IsOptional()
+    fit?: string;
+
+    @IsHexColor()
+    @IsOptional()
+    background:string;
+
     @IsOptional()
     @IsInt()
     @Type(() => Number)
@@ -52,6 +68,11 @@ export class ImageEdits {
     @IsOptional()
     @Type(() => Boolean)
     flop?: boolean;
+
+    @IsBoolean()
+    @IsOptional()
+    @Type(() => Boolean)
+    blur?: boolean;
 
     // TODO : efforts with default values (add configuration for default values)
 

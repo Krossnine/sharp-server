@@ -7,6 +7,9 @@ export type ImageTransformOptions = {
   flop?:boolean | undefined;
   format?: string | undefined;
   rotate?: number | undefined;
+  fit?: string | undefined;
+  background?: string | undefined;
+  blur?: boolean | undefined;
 };
 
 export class ImageClient {
@@ -27,6 +30,9 @@ export class ImageClient {
       flop: imageTransformOptions.flop || undefined,
       format: imageTransformOptions.format || undefined,
       rotate: imageTransformOptions.rotate !== 0 ?  imageTransformOptions.rotate : undefined,
+      fit: imageTransformOptions.fit || undefined,
+      background: imageTransformOptions.background || undefined,
+      blur: imageTransformOptions.blur || undefined,
     }));
   }
 

@@ -33,10 +33,12 @@ function applyFormat(imageEdits: ImageEdits, sharpPipeline: any) {
     return sharpPipeline;
 }
 
-function applySize(imageEdits: ImageEdits, sharpPipeline: any) {
+function applyResize(imageEdits: ImageEdits, sharpPipeline: any) {
     return sharpPipeline.resize({
         width: imageEdits.width,
         height: imageEdits.height,
+        fit: imageEdits.fit || null,
+        background: imageEdits.background ? '#' + imageEdits.background : null,
     });
 }
 
@@ -50,16 +52,25 @@ function applyOperation(imageEdits: ImageEdits, sharpPipeline: any) {
     if (imageEdits.flop) {
         sharpPipeline = sharpPipeline.flop();
     }
+    if (imageEdits.blur) {
+        sharpPipeline = sharpPipeline.blur(10);
+    }
     return sharpPipeline;
 }
 
+// @ts-ignore
 export function editImageStream(imageSourceStream: ReadStream, writableStream: WriteStream, imageEdits: ImageEdits): Promise<any> {
-    const pipeline = promisify(stream.pipeline);
-    let sharpPipeline = sharp();
-    sharpPipeline = applySize(imageEdits, sharpPipeline);
-    sharpPipeline = applyOperation(imageEdits, sharpPipeline);
-    sharpPipeline = applyFormat(imageEdits, sharpPipeline);
-    return pipeline(imageSourceStream, sharpPipeline, writableStream);
+    try {
+        const pipeline = promisify(stream.pipeline);
+        let sharpPipeline = sharp();
+        sharpPipeline = applyResize(imageEdits, sharpPipeline);
+        sharpPipeline = applyOperation(imageEdits, sharpPipeline);
+        sharpPipeline = applyFormat(imageEdits, sharpPipeline);
+        return pipeline(imageSourceStream, sharpPipeline, writableStream);
+    }
+    catch (e) {
+        console.error(e);
+    }
 }
 
 export async function editImage(req: Request, res: Response, next: NextFunction) {
